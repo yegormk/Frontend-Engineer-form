@@ -1,9 +1,8 @@
 .main{
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 1rem 0rem;
 }
 
 .register-form{
@@ -12,13 +11,33 @@
     flex-direction: column;
 }
 
-mat-form-field{
-    margin: .5rem 0rem;
-}
-
 .title{
     font-size: 1.5rem;
     font-weight: 500;
     text-align: center;
     color: #3F51B5;
+}
+
+.container-hobbies{
+    margin: 1rem 0rem;
+    padding: .5rem .2rem;
+    background-color: #EFEFEF;
+    border-radius: .3rem;
+}
+
+.hobby-title{
+    font-size: 1rem;
+    text-align: center;
+    color: #3F51B5;
+}
+
+.hobby-input{
+    max-width: 6rem;
+}
+
+.hobby-field{
+    margin-top: .5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
