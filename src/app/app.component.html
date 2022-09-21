@@ -1,1 +1,112 @@
+<main class="main">
+    <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <p class="title">Reactive Forms</p>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Enter name" formControlName="firstName">
+            <mat-error *ngIf="registerForm.controls.firstName.hasError('required')">
+                Name is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
 
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Last Name</mat-label>
+            <input matInput placeholder="Enter Last Name" formControlName="lastName">
+            <mat-error *ngIf="registerForm.controls.lastName.hasError('required')">
+                Last Name is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Choose a birthdate</mat-label>
+            <input 
+                formControlName="dateOfBirth" 
+                [min]="minDate" 
+                [max]="maxDate" 
+                matInput 
+                [matDatepicker]="picker"
+            >
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="registerForm.controls.dateOfBirth.hasError('required')">
+                Age is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Select a framework</mat-label>
+            <mat-select formControlName="framework">
+              <mat-option>None</mat-option>
+              <mat-option 
+                *ngFor="let option of listVersions | keyvalue"
+                (click)="gettingVersions(option.value)" 
+                [value]="option.key"
+              >{{ option.key | titlecase }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Choose a version</mat-label>
+            <mat-select 
+            [disabled]="!registerForm.controls.framework.valid" 
+            formControlName="frameworkVersion">
+                 <mat-option 
+                    *ngFor="let option of frameworkVersionsArr"
+                    [value]="option"
+                  >{{ option }}</mat-option> 
+            </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Email</mat-label>
+            <input 
+                type="email" 
+                matInput 
+                formControlName="email"
+                placeholder="Ex. pat@example.com"
+            >
+            <mat-error 
+                *ngIf="registerForm.controls.email.hasError('email') && 
+                !registerForm.controls.email.hasError('required')"
+            >
+                Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="registerForm.controls.email.hasError('required')">
+                Email is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="registerForm.controls.email.hasError('emailExists')">
+                Email email is already taken
+            </mat-error>
+        </mat-form-field>
+
+        <div class="container-hobbies">
+            <p class="hobby-title">Enter your hobbies!</p>
+            <div 
+                *ngFor="let hobby of registerForm.controls.hobbies.controls;
+                index as idx" 
+                formArrayName="hobbies"
+            >
+                <div [formGroup]="hobby" class="hobby-field">
+                    <mat-form-field class="hobby-input" appearance="fill">
+                        <mat-label>Name</mat-label>
+                        <input matInput [formControl]="hobby.controls.name">
+                    </mat-form-field>
+                    <mat-form-field class="hobby-input" appearance="fill">
+                        <mat-label>Duration</mat-label>
+                        <input matInput [formControl]="hobby.controls.duration">
+                    </mat-form-field>
+                    <button
+                        mat-raised-button 
+                        color="warn" 
+                        *ngIf="registerForm.controls.hobbies.length > 1" 
+                        (click)="removeInputControl(idx)"
+                    >Remove</button>
+                </div>
+            </div>
+            <button mat-raised-button color="primary" (click)="addInputControl()">Add hobby</button>
+        </div>
+
+        <button mat-raised-button type="submit" color="primary">Submit</button>
+    </form>
+</main>
